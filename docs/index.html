@@ -69,6 +69,86 @@
 <div class="page-header"><h1 id="biochybrid">BiocHybrid<a class="anchor" aria-label="anchor" href="#biochybrid"></a>
 </h1></div>
 <p>Bioconductor data structures frequently combine R-based data components for interactivity and self-descriptiveness, and external data components that enhance performance. This package provides an overview of the strategy.</p>
+<div class="section level2">
+<h2 id="objectives">Objectives<a class="anchor" aria-label="anchor" href="#objectives"></a>
+</h2>
+<ul>
+<li><p>Improve awareness of the strategy of coupling external resources to R via functions and packages</p></li>
+<li><p>Provide a framework for evaluating format choices and accelerating adoption of superior formats and methods</p></li>
+<li><p>Promote thinking on updating APIs for key resource access and use</p></li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="basic-plan">Basic plan<a class="anchor" aria-label="anchor" href="#basic-plan"></a>
+</h2>
+<table class="table">
+<thead><tr class="header">
+<th>Bioinformatic concept</th>
+<th align="left">“Tags”</th>
+<th align="center">External format</th>
+<th align="center">Size on disk</th>
+<th>Typical query</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Reference Genome</td>
+<td align="left">hg38,T2T</td>
+<td align="center"><a href="https://genome.ucsc.edu/goldenpath/help/twoBit.html" class="external-link">2bit</a></td>
+<td align="center">~1GB(Hs)</td>
+<td>genomic content in region</td>
+</tr>
+<tr class="even">
+<td>Genetic variant catalogs</td>
+<td align="left">SNPlocs,dbSNP</td>
+<td align="center">sharded RDS</td>
+<td align="center">6+GB(dbSNP 155)</td>
+<td>“snpsBy…”</td>
+</tr>
+<tr class="odd">
+<td>Variant pathogenicity</td>
+<td align="left">AlphaMissenseR, CADD</td>
+<td align="center">parquet, …</td>
+<td align="center"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Gene models</td>
+<td align="left">TxDb,EnsDb</td>
+<td align="center"></td>
+<td align="center"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Functional annotation</td>
+<td align="left">Encode, GO, Reactome</td>
+<td align="center"></td>
+<td align="center"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>PPI</td>
+<td align="left"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Cell “atlas”</td>
+<td align="left"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Spatial transcriptomics</td>
+<td align="left"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
   </div>
 

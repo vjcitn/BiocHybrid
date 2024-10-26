@@ -104,8 +104,8 @@
 <span><span class="co">##   .. .. ..@ getSNPcount              :function ()  </span></span>
 <span><span class="co">##   .. .. ..@ getSNPlocs               :function ()  </span></span>
 <span><span class="co">##   .. .. ..@ seqname_translation_table: chr(0) </span></span>
-<span><span class="co">##   ..@ .seqs_cache       :&lt;environment: 0x11848e488&gt; </span></span>
-<span><span class="co">##   ..@ .link_counts      :&lt;environment: 0x11848e760&gt; </span></span>
+<span><span class="co">##   ..@ .seqs_cache       :&lt;environment: 0x14e8cb238&gt; </span></span>
+<span><span class="co">##   ..@ .link_counts      :&lt;environment: 0x14e8cb510&gt; </span></span>
 <span><span class="co">##   ..@ metadata          :List of 6</span></span>
 <span><span class="co">##   .. ..$ organism    : chr "Homo sapiens"</span></span>
 <span><span class="co">##   .. ..$ common_name : chr "Human"</span></span>
@@ -113,6 +113,32 @@
 <span><span class="co">##   .. ..$ genome      : chr "hg38"</span></span>
 <span><span class="co">##   .. ..$ release_date: chr "2023/01/31"</span></span>
 <span><span class="co">##   .. ..$ source_url  : chr "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/p14/"</span></span></code></pre>
+<p>The 3 billion bases are managed in an S4 class instance pointing to a 2bit-format representation of the genome of size <code>file.size(hs@single_sequences@twobitfile@resource)</code>.</p>
+<p>The nucleotide sequence for chromosome 17, say, is accessible for interrogation with a familiar “list selector” syntax. The nucleotide content can be explored using the Biostrings package.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">hs</span><span class="op">$</span><span class="va">chr17</span></span></code></pre></div>
+<pre><code><span><span class="co">## 83257441-letter DNAString object</span></span>
+<span><span class="co">## seq: <span style="color: #EEEEEE; background-color: #B2B2B2;">NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN</span>...<span style="color: #EEEEEE; background-color: #B2B2B2;">NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN</span></span></span></code></pre>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/Biostrings" class="external-link">Biostrings</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/Biostrings/man/nucleotideFrequency.html" class="external-link">oligonucleotideFrequency</a></span><span class="op">(</span><span class="va">hs</span><span class="op">$</span><span class="va">chr17</span>, <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##        A        C        G        T </span></span>
+<span><span class="co">## 22639499 18723944 18851500 22705261</span></span></code></pre>
+<p>Chromosomes can be analyzed in parallel.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Bioconductor/BiocParallel" class="external-link">BiocParallel</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/register.html" class="external-link">register</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/MulticoreParam-class.html" class="external-link">MulticoreParam</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">onf</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/bplapply.html" class="external-link">bplapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">hs</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">24</span><span class="op">]</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/pkg/Biostrings/man/nucleotideFrequency.html" class="external-link">oligonucleotideFrequency</a></span><span class="op">(</span><span class="va">hs</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ans</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">onf</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">ans</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">hs</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">24</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ans</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##             A        C        G        T</span></span>
+<span><span class="co">## chr1 67070277 48055043 48111528 67244164</span></span>
+<span><span class="co">## chr2 71791213 48318180 48450903 71987932</span></span>
+<span><span class="co">## chr3 59689091 39233483 39344259 59833302</span></span>
+<span><span class="co">## chr4 58561236 36236976 36331025 58623430</span></span>
+<span><span class="co">## chr5 54699094 35731600 35879674 54955010</span></span>
+<span><span class="co">## chr6 51345477 33646690 33713330 51373025</span></span></code></pre>
 </div>
   </div>
 
