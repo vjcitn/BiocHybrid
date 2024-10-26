@@ -1,0 +1,49 @@
+---
+title: "BiocHybrid: hybrid data representation methods in Bioconductor"
+author: "Vincent J. Carey, stvjc at channing.harvard.edu"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{BiocHybrid: hybrid data representation methods in Bioconductor}
+  %\VignetteEncoding{UTF-8}
+output:
+  BiocStyle::html_document:
+    highlight: pygments
+    number_sections: yes
+    theme: united
+    toc: yes
+---
+
+# Introduction
+
+Let's consider a basic resource for computational genomic data science: a
+representation of the human genome.
+
+```{r gethg38,message=FALSE}
+library(BSgenome.Hsapiens.UCSC.hg38)
+hs = BSgenome.Hsapiens.UCSC.hg38
+str(hs)
+```
+
+The 3 billion bases are managed in an S4 class instance pointing to a 2bit-format
+representation of the genome of size `file.size(hs@single_sequences@twobitfile@resource)`.
+
+The nucleotide sequence for chromosome 17, say, is accessible
+for interrogation with a familiar "list selector" syntax.
+The nucleotide content can be explored using the Biostrings package.
+
+```{r lkchr17,message=FALSE}
+hs$chr17
+library(Biostrings)
+oligonucleotideFrequency(hs$chr17, 1)
+```
+
+Chromosomes can be analyzed in parallel.
+```{r lkpar,message=FALSE,cache=TRUE}
+library(BiocParallel)
+register(MulticoreParam(4))
+onf = bplapply(names(hs)[1:24], function(x) oligonucleotideFrequency(hs[[x]],1))
+ans = do.call(rbind, onf)
+rownames(ans) = names(hs)[1:24]
+head(ans)
+```
+

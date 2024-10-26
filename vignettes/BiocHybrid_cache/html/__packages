@@ -1,0 +1,14 @@
+rmarkdown
+BiocStyle
+BiocGenerics
+S4Vectors
+IRanges
+GenomeInfoDb
+GenomicRanges
+XVector
+Biostrings
+BiocIO
+rtracklayer
+BSgenome
+BSgenome.Hsapiens.UCSC.hg38
+BiocParallel

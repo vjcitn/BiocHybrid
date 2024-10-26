@@ -1,0 +1,55 @@
+library(AlphaMissenseR)
+am19 = am_data("hg19")
+am19
+library(dplyr)
+am19 |> count()
+am19 |> summarise(mean(am_pathogenicity))
+am19 |> summarise(max(am_pathogenicity))
+am19 |> summarise(min(am_pathogenicity))
+am19 |> summarise(mean(am_pathogenicity>.9))
+am19 |> filter(am_pathogenicity > .9) |> count()
+str(am19)
+library(maftools)
+example(mafSummary)
+str(laml)
+laml@data$Tumor_Sample_Barcode[1:10]
+length(laml@data$Tumor_Sample_Barcode)
+length(unique(laml@data$Tumor_Sample_Barcode))
+ld = laml@data
+table(ld$Reference_Allele)
+table(ld$Reference_Allele, ld$Tumor_Seq_Allele1)
+table(ld$Reference_Allele, ld$Tumor_Seq_Allele2)
+laml
+names(ld)[1:10]
+names(ld)[1:20]
+table(nchar(ld$Reference_Allele))
+library(dplyr)
+ld |> filter(nchar(Reference_Allele)==1L)
+ld |> filter(nchar(Reference_Allele)==1L) |> count()
+ld |> count()
+ld |> filter(nchar(Tumor_Seq_Allele1)==1L) |> count()
+ld |> filter(nchar(Tumor_Seq_Allele2)==1L) |> count()
+laml
+maf2key = function(mafinst) {
+ ld = slot(mafinst, "data")
+ ldclean = ld |> dplyr::filter(nchar(Reference_Allele)==1L,
+        nchar(Tumor_Seq_Allele2)==1L)
+ key = with(ldclean, paste(Chromosome, Start_Position, Reference_Allele, Tumor_Seq_Allele2, sep=":"))
+ gene = ldclean$Hugo_Symbol
+ data.frame(key, gene)
+}
+ff = maf2key(laml)
+dim(ff)
+head(ff)
+library(AlphaMissenseR)
+am19
+library(org.Hs.eg.db)
+sym2uni = function(sym) {
+ db = org.Hs.eg.db::org.Hs.eg.db
+ AnnotationDbi::select(db, keys=sym, keytype="SYMBOL", columns="UNIPROT")
+}
+sym2uni("ABCF1")
+sym2uni("ABCF1")$UNIPROT
+am19 |> dplyr::filter(uniprot_id %in% .Last.value)
+getwd()
+savehistory(file="domafstuff.hist.txt")
