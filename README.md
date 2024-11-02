@@ -28,3 +28,29 @@ adoption of superior formats and methods
 |Cell "atlas"|
 |Spatial transcriptomics|
 
+
+Interrogate a LoomExperiment from hca package obtained via code like
+```
+library(hca)
+projectId = "53c53cd4-8127-4e12-bc7f-8fe1610a715c"
+file_filter <- filters(
+    projectId = list(is = projectId),
+    fileFormat = list(is = "loom")
+)
+pfile = files(file_filter)
+pfile$projectTitle[1]
+#pfile |> files_download()  # can be very slow, retrieves 17 large files
+```
+```
+Formal class 'DelayedMatrix' [package "DelayedArray"] with 1 slot
+  ..@ seed:Formal class 'DelayedAperm' [package "DelayedArray"] with 2 slots
+  .. .. ..@ perm: int [1:2] 2 1
+  .. .. ..@ seed:Formal class 'HDF5ArraySeed' [package "HDF5Array"] with 7 slots
+  .. .. .. .. ..@ filepath : chr "/home/exouser/.cache/R/hca/31474194a280f_31474194a280f.loom"
+  .. .. .. .. ..@ name     : chr "/matrix"
+  .. .. .. .. ..@ as_sparse: logi FALSE
+  .. .. .. .. ..@ type     : chr NA
+  .. .. .. .. ..@ dim      : int [1:2] 506896 58347
+  .. .. .. .. ..@ chunkdim : int [1:2] 64 64
+  .. .. .. .. ..@ first_val: int 0
+```
