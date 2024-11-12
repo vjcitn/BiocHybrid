@@ -17,16 +17,16 @@ adoption of superior formats and methods
 
 ## Basic plan
 
-|Bioinformatic concept|"Tags"|External format|Size on disk|Typical query|
+|Bioinformatic concept|Examples|External format|Size on disk|Typical query|
 |---------------------|:---|:---------------:|:------------:|-------------|
 |Reference Genome|hg38,T2T|[2bit](https://genome.ucsc.edu/goldenpath/help/twoBit.html)|~1GB(Hs)|genomic content in region|
 |Genetic variant catalogs|SNPlocs,dbSNP|sharded RDS|6+GB(dbSNP 155)|"snpsBy..."|
-|Variant pathogenicity|AlphaMissenseR, CADD|parquet, ...|
-|Gene models|TxDb,EnsDb|
-|Functional annotation|Encode, GO, Reactome|
-|PPI|
-|Cell "atlas"|
-|Spatial transcriptomics|
+|Variant pathogenicity|AlphaMissenseR, CADD|duckdb storage, sharded RLE in RDS|
+|Gene models|TxDb,EnsDb|SQLite|~100MB|transcript id and coordinates|
+|Ontologies for genomics|EFO, GO, Reactome,CHEBI,...|OWL|~1-100MB|gene sets, common ancestral terms|
+|Single cell genomics|scRNAseq/hca|RDS, HDF5|~1GB+|inference on cell type and function|
+|Cell "atlas"|curatedAtlas|parquet|~500MB|cells by donor characteristics|
+|Spatial transcriptomics|outputs of multiple platforms|HDF5, parquet, Zarr|10GB|Expression patterns in spatially registered tissue images|
 
 
 Interrogate a LoomExperiment from hca package obtained via code like
