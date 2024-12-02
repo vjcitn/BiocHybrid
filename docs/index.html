@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">BiocHybrid</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2</span>
       </span>
     </div>
 
@@ -81,13 +81,14 @@
 <div class="section level2">
 <h2 id="basic-plan">Basic plan<a class="anchor" aria-label="anchor" href="#basic-plan"></a>
 </h2>
-<table class="table">
+<!-- |Reference Genome|hg38,T2T|[2bit](https://genome.ucsc.edu/goldenpath/help/twoBit.html)|~1GB(Hs)|genomic content in region| --><table class="table">
 <colgroup>
-<col width="30%">
-<col width="5%">
 <col width="24%">
-<col width="20%">
-<col width="18%">
+<col width="4%">
+<col width="19%">
+<col width="16%">
+<col width="15%">
+<col width="19%">
 </colgroup>
 <thead><tr class="header">
 <th>Bioinformatic concept</th>
@@ -95,14 +96,16 @@
 <th align="center">External format</th>
 <th align="center">Size on disk</th>
 <th>Typical query</th>
+<th align="center">unique IP/month</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td>Reference Genome</td>
 <td align="left">hg38,T2T</td>
-<td align="center"><a href="https://genome.ucsc.edu/goldenpath/help/twoBit.html" class="external-link">2bit</a></td>
+<td align="center">2bit</td>
 <td align="center">~1GB(Hs)</td>
 <td>genomic content in region</td>
+<td align="center">4000</td>
 </tr>
 <tr class="even">
 <td>Genetic variant catalogs</td>
@@ -110,13 +113,15 @@
 <td align="center">sharded RDS</td>
 <td align="center">6+GB(dbSNP 155)</td>
 <td>“snpsBy…”</td>
+<td align="center">1000</td>
 </tr>
 <tr class="odd">
 <td>Variant pathogenicity</td>
 <td align="left">AlphaMissenseR, CADD</td>
 <td align="center">duckdb storage, sharded RLE in RDS</td>
-<td align="center"></td>
-<td></td>
+<td align="center">100MB+</td>
+<td>structural and functional consequences of DNA changes</td>
+<td align="center">20</td>
 </tr>
 <tr class="even">
 <td>Gene models</td>
@@ -124,34 +129,47 @@
 <td align="center">SQLite</td>
 <td align="center">~100MB</td>
 <td>transcript id and coordinates</td>
+<td align="center">2500</td>
 </tr>
 <tr class="odd">
-<td>Ontologies for genomics</td>
-<td align="left">EFO, GO, Reactome,CHEBI,…</td>
-<td align="center">OWL</td>
-<td align="center">~1-100MB</td>
-<td>gene sets, common ancestral terms</td>
+<td>Species-level genomcs</td>
+<td align="left">OrgDb</td>
+<td align="center">SQLite</td>
+<td align="center">~300MB</td>
+<td>gene to transcript/protein/ontology</td>
+<td align="center">20000</td>
 </tr>
 <tr class="even">
+<td>Ontologies for genomics</td>
+<td align="left">EFO, GO, Reactome,CHEBI,…</td>
+<td align="center">OWL/OBO</td>
+<td align="center">~1-100MB</td>
+<td>gene sets, common ancestral terms</td>
+<td align="center">20000</td>
+</tr>
+<tr class="odd">
 <td>Single cell genomics</td>
 <td align="left">scRNAseq/hca</td>
 <td align="center">RDS, HDF5</td>
 <td align="center">~1GB+</td>
 <td>inference on cell type and function</td>
+<td align="center">1900</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Cell “atlas”</td>
 <td align="left">curatedAtlas</td>
 <td align="center">parquet</td>
 <td align="center">~500MB</td>
 <td>cells by donor characteristics</td>
+<td align="center">100</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Spatial transcriptomics</td>
 <td align="left">outputs of multiple platforms</td>
 <td align="center">HDF5, parquet, Zarr</td>
 <td align="center">10GB</td>
 <td>Expression patterns in spatially registered tissue images</td>
+<td align="center">4000</td>
 </tr>
 </tbody>
 </table>
